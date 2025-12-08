@@ -1,11 +1,12 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../config/env');
 
 exports.register = async (req, res) => {
   try {
     const user = new User(req.body);
     await user.save();
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET);
     res.status(201).json({ user: { ...user.toObject(), password: undefined }, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -21,7 +22,7 @@ exports.login = async (req, res) => {
     }
     user.lastLogin = new Date();
     await user.save();
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET);
     res.json({ user: { ...user.toObject(), password: undefined }, token });
   } catch (error) {
     res.status(500).json({ error: error.message });
