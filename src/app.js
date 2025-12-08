@@ -21,7 +21,8 @@ connectDB();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://backendintr.vercel.app"
+    "https://backendintr.vercel.app",
+    "https://frontend-int-ten.vercel.app"
     
   ],
   credentials: true
