@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Test Dashboard API</h1>
+    <button onclick="testLogin()">1. Login</button>
+    <button onclick="testDashboard()">2. Get Dashboard Stats</button>
+    <pre id="result"></pre>
+
+    <script>
+        let token = '';
+
+        async function testLogin() {
+            try {
+                const response = await fetch('http://localhost:4000/api/users/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'superadmin@invertry.com',
+                        password: 'admin123'
+                    })
+                });
+                const data = await response.json();
+                token = data.token;
+                document.getElementById('result').textContent = 'Login Success!\nToken: ' + token;
+            } catch (error) {
+                document.getElementById('result').textContent = 'Error: ' + error.message;
+            }
+        }
+
+        async function testDashboard() {
+            if (!token) {
+                document.getElementById('result').textContent = 'Please login first!';
+                return;
+            }
+            try {
+                const response = await fetch('http://localhost:4000/api/dashboard/stats', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await response.json();
+                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('result').textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
