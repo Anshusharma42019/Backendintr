@@ -31,7 +31,7 @@ app.use(express.json());
 // Root route
 app.get('/', (req, res) => {
   res.json({
-    message: 'Invertry ERP Backend API',
+    message: 'Inventory ERP Backend API',
   });
 });
 // Health check
